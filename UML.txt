@@ -1,0 +1,34 @@
+actor Customer
+
+
+participant User
+participant System
+participant Movies
+
+System->Movies: createCatalog()
+//creates catalog from csv file
+
+
+parallel off
+Customer->User:createUser()
+//creates user with email and password
+User->System:
+System-->User:
+User-->Customer:
+
+parallel off
+User->System:findMovie()
+//return movies in the catalog and the 5 movies more rented in the last 5 min
+System->Movies:
+Movies-->System:
+System-->User:
+
+
+parallel off
+User->System:rentMovie()
+//prints "receipt" with user's name, price and movie name
+System->Movies:
+Movies-->System:
+System-->User:
+System->User:addMovieList()
+// add movie rented to customer's list of rented movies
