@@ -5,15 +5,27 @@
 
 package eirvid;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
 /**
  *
  * @author diese
  */
 public class EirVid {
     
-    private static String CURRENTUSER = null;
-
-    public static void main(String[] args) {        
+    //initializing as String for the moment, will be a USER class object later on
+    private static String CURRENTUSER = "Ali";
+    static Scanner keyboard = new Scanner(System.in);
+    static List<Rental> allRentals = new ArrayList<>();
+    
+    public static void main(String[] args) throws FileNotFoundException, IOException {        
         
         
         //1)moviesDataInput
@@ -62,9 +74,103 @@ public class EirVid {
         //4) rentedAt - the time this movie was rented at
     
         
+        openShop(CURRENTUSER);
+        
+    }
+    
+    //for the moment currentuser is a string, this will be a user object later on after login is implemented by group mate
+    public static void openShop(String CURRENTUSER) throws FileNotFoundException, IOException{
+        int input;
+        System.out.println(CURRENTUSER+", Welcome to EirVid - Movie Rentals");
+        
+        do{
+            System.out.println("""
+                               Please select one of the following options
+                               1)View Recommended Movies
+                               2)Rent a movie
+                               3)Return a movie
+                               4)Display my movies
+                               5)Exit the shop""");
+          
+            input = keyboard.nextInt();
+            switch(input){
+                case 1 -> {
+                    //top 5 movies which appear most in rentals table in tb will appear here.
+                }
+                case 2 -> {
+                    //reading all movies line by line and storing in an array list named movies
+                    BufferedReader csv = new BufferedReader(new FileReader("C:\\Users\\ohter\\Desktop\\RT-Player\\src\\Movie_Metadata_Edited_2.csv"));
+                    ArrayList<String[]> movies = new ArrayList<>();
+                    String line ="";
+                    while((line = csv.readLine())!=null){                        
+                    movies.add(line.split(",")); 
+                    }
+                    
+                    //displaying all movies with index positions (which will be our movie ids)
+                    movies.forEach(movie->{
+                        
+                        //to split by each movie
+                        System.out.println(movies.indexOf(movie)+") "+ Arrays.toString(movie));
+                        
+                    });
+                    
+                    //asking user for the Id of the movie he wants to rent, as soon as he selects
+                    //a rental object is created with his Id (for the moment I only have name) against the 
+                    //movie he selected. This object will be stored in the rentals table in database later on.
+                    boolean appCompleted;
+                    do{
+                        System.out.println("Please enter the Id of the movie you want to rent");
+                        int movieId = keyboard.nextInt();
+                        
+                        //only saving in arraylist at the moment, will be stored and retrieved from db later on
+                       allRentals.add(new Rental(movieId, CURRENTUSER));
+                       
+                       //displays a success message with the title of the movie
+                        System.out.println(Arrays.toString(movies.get(movieId)).split(",")[1]+" was rented out!");
+                        //after this when we have a db, we will set the isAvailable field of this movie 
+                        //in movies table to false. for example -> movies.at(movieId).isAvailable.set(false);
+                        //we need to write a db table first
+                        System.out.println("Press any key to go back to main menu");
+                        waitInput();
+                        appCompleted = true;
+                    }while(!appCompleted);
+                    
+	
+                    
+                }
+                case 3 -> {
+                    //will add movie return mechanism here
+                }
+                case 4 -> {
+                    
+                    //for the moment, gets all rented movies from a list of allRentals,
+                    //when db is up, we will get this from db
+                    allRentals.forEach(rental->{
+                        if(rental.userId.equalsIgnoreCase(CURRENTUSER)){
+                            System.out.println(rental);
+                            waitInput();
+                        }else{
+                            System.out.println("You are not renting any movies!");
+                        }
+                    });
+                    
+                }
+                case 5 -> System.out.println("See you next time!");
+            }
+            
+            
+            
+        }while(input!=5);
+        
+        
         
         
         
         
     }
+    
+    public static void waitInput(){
+        keyboard.next();
+    }
+    
 }
