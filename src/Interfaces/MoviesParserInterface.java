@@ -4,12 +4,13 @@
  */
 package Interfaces;
 
-import com.mycompany.eirvid.MovieTitle;
+import eirvid.MovieTitle;
+import java.util.List;
 
 /**
  *
  * @author diese
  */
-public interface MoviesMapperInterface {
-    public MovieTitle Map(String[] fields);
+public interface MoviesParserInterface {
+    public List<MovieTitle> ParseMovies(List<String> lines);
 }

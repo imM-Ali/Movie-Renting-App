@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
  */
 
-package com.mycompany.eirvid;
+package eirvid;
 
 /**
  *
@@ -13,7 +13,7 @@ public class EirVid {
     
     private static String CURRENTUSER = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         
         
         //1)moviesDataInput
