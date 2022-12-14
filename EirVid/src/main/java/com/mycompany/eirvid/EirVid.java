@@ -26,9 +26,14 @@ public class EirVid {
         
         //---------------NEED SEPERATE CLASSES FOR THESE----------------------//
         
+        
+        
         //3) move all the movie projects to database table named 'movies' with appropriate properties/labels,
         // this table will have all properties from csv plus additional property named 'isAvailable'
         //isAvailable will be a boolean and stay true unless the movie is rented out.
+        
+        
+        
         
         //4) login/signup =For signup, If it doesnt exist, Create a table in database named 'users' and add users there.
         //for login, when user has entered credentials, check if it exists in database and set CURRENT_USER to this user.
@@ -39,6 +44,9 @@ public class EirVid {
         //4) rentalHistory - this will be an array with all the Ids of movies this user has rented. 
         
         
+        
+        
+       // MUHAMMAD ALI SHAHZAIB - 2020463         
         //5) renting process - When successfully logged in, will display menu:
         
         // - View recommended movies (will display most rented movies, we will get this from rentals table)
