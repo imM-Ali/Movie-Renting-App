@@ -18,21 +18,21 @@ public class MovieParser implements MoviesParserInterface{
     private MoviesValidatorInterface movieValidator;
     private MoviesMapperInterface movieMapper;
 
-    public MovieParser(MoviesValidatorInterface tradeValidator, MoviesMapperInterface tradeMapper) {
+    public MovieParser(MoviesValidatorInterface movieValidator, MoviesMapperInterface movieMapper) {
         this.movieValidator = movieValidator;
         this.movieMapper = movieMapper;
     }
     
     public List<MovieTitle> ParseMovies(List<String> lines) {
-        List<MovieTitle> trades = new ArrayList<>();
+        List<MovieTitle> movies = new ArrayList<>();
         lines.forEach(line -> {
             String[] fields = line.split(",");
             
             if (movieValidator.Validate(fields)) {
-                trades.add(movieMapper.Map(fields));
+                movies.add(movieMapper.Map(fields));
             }
 
         });        
-        return trades;
+        return movies;
     }
 }
