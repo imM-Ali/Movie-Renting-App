@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class MoviesDataInput implements MoviesDataInputInterface {
     BufferedReader myReader;
-    String fileName = "C:\\Diesel\\2 - AADP\\AAPD-OOAD-CA\\AAPD-OOAD-CA\\EirVid\\input\\Movie_Metadata_Edited_2.csv";
+    String fileName = "src/Movie_Metadata_Edited_2.csv";
     public MoviesDataInput() throws FileNotFoundException, IOException {
         this.myReader = new BufferedReader(new FileReader(fileName));
     }
