@@ -26,7 +26,7 @@ public class MovieParser implements MoviesParserInterface{
     public List<MovieTitle> ParseMovies(List<String> lines) {
         List<MovieTitle> movies = new ArrayList<>();
         lines.forEach(line -> {
-            String[] fields = line.split(",");
+            String[] fields = line.split(";");
             
             if (movieValidator.Validate(fields)) {
                 movies.add(movieMapper.Map(fields));

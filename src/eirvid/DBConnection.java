@@ -36,7 +36,7 @@ public class DBConnection implements DBConnectionInterface{
         try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
            Statement stmt = conn.createStatement();
         ) {
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS movies (id INT not null auto_increment, org_language varchar(5), org_title varchar(50), overview tinyblob, popularity float(3,2), release_date varchar(10), runtime integer(3), tagline varchar(50), title varchar(50), vote_avg float(3,2), vote_count integer(5), price float(4,2), isAvailable boolean default false, last_rented datetime, primary key (id));");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS movies (id INT not null auto_increment, org_language varchar(5), org_title varchar(100), overview blob, popularity float(100,2), release_date varchar(10), runtime integer(3), tagline blob, title varchar(100), vote_avg float(100,2), vote_count integer(5), price float(100,2), isAvailable boolean default false, last_rented datetime, primary key (id));");
         } catch (SQLException e) {
             e.printStackTrace();
         }
