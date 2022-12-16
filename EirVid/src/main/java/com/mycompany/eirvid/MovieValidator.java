@@ -17,7 +17,7 @@ public class MovieValidator implements MoviesValidatorInterface{
     @Override
     public boolean Validate(String[] fields) {
         if (fields.length != 11) {
-            System.out.println("Warning: Incorrect number of fields");
+            System.out.println("Warning: Incorrect number of fields"+ fields.length);
             return false;
         }
 
@@ -89,7 +89,7 @@ public class MovieValidator implements MoviesValidatorInterface{
 
         double moviePrice = -1;
         try {
-            moviePrice = Double.parseDouble(fields[10]);
+            moviePrice = Double.parseDouble(fields[10]);            
         } 
         catch (Exception e) {
              System.out.println("Warning: Movie price not a valid decimal");

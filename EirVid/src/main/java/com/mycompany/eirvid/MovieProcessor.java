@@ -30,8 +30,9 @@ public class MovieProcessor {
         List<MovieTitle> movies = movieParser.ParseMovies(lines);
         String sql="";
         for (MovieTitle movie : movies) {
-                    sql = String.format("INSERT INTO Movies (org_language, org_title, overview, popularity, release_date, runtime, tagline, title, vote_avg, vote_count, price, isAvailable) VALUES ('%s', '%s', '%s', %f, '%s', %d, '%s', %f, %d, %f, %b);",
-                    movie.orgLang, movie.orgTitle, movie.overview, movie.popularity, movie.releaseDate, movie.runtime, movie.tagline, movie.voteAvg, movie.voteCount, movie.price, true);
+                    sql = String.format("INSERT INTO Movies (org_language, org_title, overview, popularity, release_date, runtime, tagline, title, vote_avg, vote_count, price, isAvailable) "
+                            + "VALUES ('%s', '%s', '%s', %f, '%s', %d, '%s', '%s', %f, %d, %f, %b);",
+                    movie.orgLang, movie.orgTitle, movie.overview, movie.popularity, movie.releaseDate, movie.runtime, movie.tagline, movie.title,movie.voteAvg, movie.voteCount, movie.price, true);
                     dbConnection.ConnectDatabase(sql);
             }
     }

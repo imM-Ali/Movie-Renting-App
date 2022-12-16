@@ -16,15 +16,22 @@ public class MovieMapper implements MoviesMapperInterface{
         String orgLang = fields[0];
         String orgTitle = fields[1];
         String overview = fields[2];
-        double popularity = Double.parseDouble(fields[3]);
+        double popularity = Truncate(fields[3]);
         String releaseDate = fields[4];
         int runtime = Integer.parseInt(fields[5]);
         String tagline = fields[6];
         String title = fields[7];
-        double voteAvg = Double.parseDouble(fields[8]);
-        int voteCount = Integer.parseInt(fields[11]);
-        double price = Double.parseDouble(fields[10]);
+        double voteAvg = Truncate(fields[8]);
+        int voteCount = Integer.parseInt(fields[9]);
+        double price = Truncate(fields[10]);
 
         return new MovieTitle(orgLang, orgTitle, overview, popularity, releaseDate, runtime, tagline, title, voteAvg, voteCount, price);      
+    }
+    
+    public double Truncate (String toTruncate){
+        double truncated = Double.parseDouble(toTruncate);
+        String temp = String.format("%.2f",truncated);
+        truncated = Double.parseDouble(temp);
+        return truncated;
     }
 }
