@@ -25,7 +25,7 @@ public class MovieMapper implements MoviesMapperInterface{
         double voteAvg = Double.parseDouble(fields[8]);
         int voteCount = Integer.parseInt(fields[9].trim());
         double price = Double.parseDouble(fields[10]);
-
+       
         return new Movie(orgLang, orgTitle, overview, popularity, releaseDate, runtime, tagline, title, voteAvg, voteCount, price);      
     }
 }

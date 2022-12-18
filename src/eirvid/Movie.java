@@ -20,7 +20,8 @@ public class Movie{
     double voteAvg;
     int voteCount;
     double price;
-
+    Boolean isAvailable;
+    
     public Movie(String orgLang, String orgTitle, String overview, double popularity, String releaseDate, int runtime, String tagline, String title, double voteAvg, int voteCount, double price) {
         this.orgLang = orgLang;
         this.orgTitle = orgTitle;
@@ -33,5 +34,6 @@ public class Movie{
         this.voteAvg = voteAvg;
         this.voteCount = voteCount;
         this.price = price;
+        this.isAvailable = true;
     }
 }

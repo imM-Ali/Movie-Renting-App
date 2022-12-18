@@ -29,10 +29,13 @@ public class MoviesDataInput implements MoviesDataInputInterface {
         
         List<String[]> movieData = new ArrayList<>();
         String inputLine = "";
-        while ((inputLine = myReader.readLine())!=null) {            
+       
+        while ((inputLine = myReader.readLine())!=null) {    
+            inputLine = inputLine.replace("\'", "");
             movieData.add(inputLine.split(","));
             
         }
+        
         return movieData;
     }
 }
