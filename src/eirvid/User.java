@@ -16,13 +16,10 @@ public class User {
      int id; //this will be auto incremented in database
      String userName;
      String password; 
-     List<Movie> rentalHistory;
+     String rentalHistory = "";
      
-     public User(String _userName, String _password){
+     public User(){
         
-        
-        this.password = _password;
-        this.userName = _userName;
         
         
     }

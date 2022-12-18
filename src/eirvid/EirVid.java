@@ -26,11 +26,11 @@ import java.sql.Statement;
  */
 public class EirVid {
 
-    private static User CURRENTUSER = new User("Ali", "pass");
+    private static User CURRENTUSER = null;
     static Scanner keyboard = new Scanner(System.in);
     static List<Rental> allRentals = new ArrayList<>();
-
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    static Statement stmt;
+    public static void main(String[] args) throws FileNotFoundException, IOException, SQLException {
         try {
 
             //Workflow ->Movie processor calls for Movies Data Input -> Movies Data Parsed -> Movies data validated -> Movies data mapped -> mapped data returned to main class
@@ -49,7 +49,7 @@ public class EirVid {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             try {
                 Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/", USER, PASS);
-                Statement stmt = conn.createStatement();
+                stmt = conn.createStatement();
                 stmt.execute("CREATE SCHEMA IF NOT EXISTS " + dbName + ";");
                 stmt.execute("USE " + dbName + ";");
                 stmt.execute("CREATE TABLE IF NOT EXISTS Movies "
@@ -122,7 +122,7 @@ public class EirVid {
             //3) userId - the Id of user who has rented this movie
             //4) rentedAt - the time this movie was rented at
             
-            openShop(CURRENTUSER);
+            handleLogin();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EirVid.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -132,12 +132,51 @@ public class EirVid {
         }
 
     }
-
-    //for the moment currentuser is a string, this will be a user object later on after login is implemented by group mate
-    public static void openShop(User CURRENTUSER) throws FileNotFoundException, IOException {
+    
+    public static void handleLogin() throws SQLException, IOException{
         int input;
-        System.out.println(CURRENTUSER.userName + ", Welcome to EirVid - Movie Rentals");
+        //System.out.println(CURRENTUSER.userName + ", Welcome to EirVid - Movie Rentals");
+        stmt.execute("CREATE TABLE IF NOT EXISTS Users "
+                        + "(id INT NOT NULL AUTO_INCREMENT UNIQUE,"
+                        + "userName VARCHAR(512) NOT NULL,"
+                        + "password VARCHAR(512) NOT NULL UNIQUE,"
+                        + "history TEXT,"         
+                        + "PRIMARY KEY (id));"
+                );
+        do{
+        System.out.println("""
+                               Please select one of the following options
+                               1)Login
+                               2)Signup """
+                               );
+        input = keyboard.nextInt();
+        loginHandler attempt = new loginHandler();
+        switch(input){
+            case 1->{                
+               attempt.login();
+            }
+            case 2 ->{                
+                attempt.signUp();  
+            }
+        }
+        }while(CURRENTUSER==null);
+           
+    }
+    
 
+    public static void openShop(User _currentUser) throws FileNotFoundException, IOException, SQLException {
+        stmt.execute("CREATE TABLE IF NOT EXISTS Rentals "
+                        + "(id INT NOT NULL AUTO_INCREMENT UNIQUE,"
+                        + "movieId INT NOT NULL,"
+                        + "userId INT NOT NULL,"
+                        + "returnTime DATE,"         
+                        + "PRIMARY KEY (id));"
+                );
+        
+        System.out.println("\nWELCOME TO OUR SHOP - "+_currentUser.userName);
+        System.out.println("\nPLEASE NOTE MINIMUM RENT DURATION IS 1 DAY");
+        int input;
+        MoviesHandler attempt = new MoviesHandler();
         do {
             System.out.println("""
                                Please select one of the following options
@@ -153,43 +192,9 @@ public class EirVid {
                     //top 5 movies which appear most in rentals table in tb will appear here.
                 }
                 case 2 -> {
-                    //reading all movies line by line and storing in an array list named movies
-                    BufferedReader csv = new BufferedReader(new FileReader("src/Movie_Metadata_Edited_2.csv"));
-                    ArrayList<String[]> movies = new ArrayList<>();
-                    String line = "";
-                    while ((line = csv.readLine()) != null) {
-                        movies.add(line.split(","));
-                    }
-
-                    //displaying all movies with index positions (which will be our movie ids)
-                    movies.forEach(movie -> {
-
-                        //to split by each movie
-                        System.out.println(movies.indexOf(movie) + ") " + Arrays.toString(movie));
-
-                    });
-
-                    //asking user for the Id of the movie he wants to rent, as soon as he selects
-                    //a rental object is created with his Id (for the moment I only have name) against the 
-                    //movie he selected. This object will be stored in the rentals table in database later on.
-                    boolean appCompleted;
-                    do {
-                        System.out.println("Please enter the Id of the movie you want to rent");
-                        int movieId = keyboard.nextInt();
-
-                        //only saving in arraylist at the moment, will be stored and retrieved from db later on
-                        allRentals.add(new Rental(movieId, CURRENTUSER.userName));
-
-                        //displays a success message with the title of the movie
-                        System.out.println(Arrays.toString(movies.get(movieId)).split(",")[1] + " was rented out!");
-                        //after this when we have a db, we will set the isAvailable field of this movie 
-                        //in movies table to false. for example -> movies.at(movieId).isAvailable.set(false);
-                        //we need to write a db table first
-                        System.out.println("Press any key to go back to main menu");
-                        waitInput();
-                        appCompleted = true;
-                    } while (!appCompleted);
-
+                   attempt.viewMovies();
+                  Rental rentObject = attempt.rentMovie(_currentUser);
+                     
                 }
                 case 3 -> {
                     //will add movie return mechanism here
@@ -198,14 +203,7 @@ public class EirVid {
 
                     //for the moment, gets all rented movies from a list of allRentals,
                     //when db is up, we will get this from db
-                    allRentals.forEach(rental -> {
-                        if (rental.userId.equalsIgnoreCase(CURRENTUSER.userName)) {
-                            System.out.println(rental);
-                            waitInput();
-                        } else {
-                            System.out.println("You are not renting any movies!");
-                        }
-                    });
+                    
 
                 }
                 case 5 ->
