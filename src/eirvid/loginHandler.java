@@ -57,6 +57,7 @@ public class loginHandler {
             if(allUsers.next()){
                 System.out.println("Logged in!");
                 newUser.id = allUsers.getInt(1);
+                newUser.rentalHistory = allUsers.getString(4);
                 EirVid.openShop(newUser);
                 done=1;
             }else{

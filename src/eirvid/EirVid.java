@@ -194,7 +194,7 @@ public class EirVid {
                     //top 5 movies which appear most in rentals table in tb will appear here.
                 }
                 case 2 -> {
-                    System.out.println("AKDKJNALSNCLSANC"+_currentUser.id);
+                    
                  attempt.viewMovies();
                     
                  attempt.rentMovie(_currentUser);

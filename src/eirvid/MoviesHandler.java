@@ -50,9 +50,23 @@ public class MoviesHandler {
         boolean appCompleted;        
         int rentalDuration;
         do {
-            System.out.println("Please enter the Id of the movie you want to rent");
-            int movieId = keyboard.nextInt();
-
+            Boolean isAvailable=false;
+            int movieId;
+            do{
+            System.out.println("Please enter the Id of the movie you want to rent");            
+            movieId = keyboard.nextInt();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM movies WHERE id="+movieId+"");            
+            if(rs.next()){                
+               isAvailable = rs.getBoolean(13);
+               if(!isAvailable){
+                   System.out.println("Movie not available");
+               }
+            }else{
+                System.out.println("Movie not in Record");
+            }            
+            }while(!isAvailable);
+           
+            
             System.out.println("How long do you want to rent for? Enter number of days");
             boolean correctInput = false;
             do {
@@ -62,10 +76,15 @@ public class MoviesHandler {
             
             Rental newRent = new Rental(movieId, currentUser.id, rentalDuration);
             stmt.execute("INSERT INTO Rentals(movieId, userId, rentedAt, returnAt) VALUES ('"+newRent.movieId+"','"+newRent.userId+"', STR_TO_DATE(\""+ newRent.rentedAt +"\", \"%Y-%m-%d\"),'"+newRent.willReturnAt+"')");
-            
-            
-           
-            
+            stmt.execute("update movies set isAvailable = false where id = "+newRent.movieId+"; ");
+            String userHistory = currentUser.rentalHistory;
+            if(userHistory==""){
+                userHistory = userHistory.concat(""+newRent.movieId+"");
+            }else{
+                userHistory = userHistory.concat(","+newRent.movieId+"");
+            }
+                       
+            stmt.execute("update users set history = '"+userHistory+"' Where id = ("+newRent.userId+")");
             
             //only saving in arraylist at the moment, will be stored and retrieved from db later on
             // allRentals.add(new Rental(movieId, CURRENTUSER.userName));
