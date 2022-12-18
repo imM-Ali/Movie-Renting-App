@@ -31,7 +31,7 @@ public class EirVid {
     static Scanner keyboard = new Scanner(System.in);
     static List<Rental> allRentals = new ArrayList<>();
     static Statement stmt;
-    public static void main(String[] args) throws FileNotFoundException, IOException, SQLException {
+    public static void main(String[] args) throws FileNotFoundException, IOException, SQLException, ParseException {
         try {
 
             //Workflow ->Movie processor calls for Movies Data Input -> Movies Data Parsed -> Movies data validated -> Movies data mapped -> mapped data returned to main class
@@ -134,7 +134,7 @@ public class EirVid {
 
     }
     
-    public static void handleLogin() throws SQLException, IOException{
+    public static void handleLogin() throws SQLException, IOException, FileNotFoundException, ParseException{
         int input;
         //System.out.println(CURRENTUSER.userName + ", Welcome to EirVid - Movie Rentals");
         stmt.execute("CREATE TABLE IF NOT EXISTS Users "
