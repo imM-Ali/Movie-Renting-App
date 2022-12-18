@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 
 /**
  *
@@ -164,12 +165,13 @@ public class EirVid {
     }
     
 
-    public static void openShop(User _currentUser) throws FileNotFoundException, IOException, SQLException {
+    public static void openShop(User _currentUser) throws FileNotFoundException, IOException, SQLException, ParseException {
         stmt.execute("CREATE TABLE IF NOT EXISTS Rentals "
                         + "(id INT NOT NULL AUTO_INCREMENT UNIQUE,"
                         + "movieId INT NOT NULL,"
                         + "userId INT NOT NULL,"
-                        + "returnTime DATE,"         
+                        + "rentedAt DATE," 
+                        + "returnAt DATE," 
                         + "PRIMARY KEY (id));"
                 );
         
@@ -192,9 +194,17 @@ public class EirVid {
                     //top 5 movies which appear most in rentals table in tb will appear here.
                 }
                 case 2 -> {
-                   attempt.viewMovies();
-                  Rental rentObject = attempt.rentMovie(_currentUser);
-                     
+                    System.out.println("AKDKJNALSNCLSANC"+_currentUser.id);
+                 attempt.viewMovies();
+                    
+                 attempt.rentMovie(_currentUser);
+                    
+                  
+                  
+                  
+                  
+                  
+                  
                 }
                 case 3 -> {
                     //will add movie return mechanism here

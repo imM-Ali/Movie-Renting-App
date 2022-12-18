@@ -6,9 +6,11 @@ package eirvid;
 
 import static eirvid.EirVid.keyboard;
 import static eirvid.EirVid.stmt;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 /**
  *
@@ -34,7 +36,7 @@ public class loginHandler {
                 }
                 }       
     }
-    public void login() throws SQLException, IOException{
+    public void login() throws SQLException, IOException, FileNotFoundException, ParseException{
         System.out.println("LOGIN FORM\n");
                 User newUser = new User();
                 System.out.print("Please Enter Username: ");
@@ -45,6 +47,7 @@ public class loginHandler {
                 while(allUsers.next()){
                     if(allUsers!=null){
                         System.out.println("Logged in!");
+                        newUser.id = allUsers.getInt(1);                        
                         EirVid.openShop(newUser);
                     }else{
                     //stmt.execute("INSERT INTO Users(userName, password, history) VALUES ('"+newUser.userName+"','"+newUser.password+"','"+newUser.rentalHistory+"')");

@@ -46,7 +46,7 @@ public class MoviesHandler {
         //movie he selected. This object will be stored in the rentals table in database later on.
     }
 
-    public Rental rentMovie(User currentUser) {
+    public void rentMovie(User currentUser) throws SQLException, ParseException {
         boolean appCompleted;        
         int rentalDuration;
         do {
@@ -61,6 +61,11 @@ public class MoviesHandler {
             } while (!correctInput);
             
             Rental newRent = new Rental(movieId, currentUser.id, rentalDuration);
+            stmt.execute("INSERT INTO Rentals(movieId, userId, rentedAt, returnAt) VALUES ('"+newRent.movieId+"','"+newRent.userId+"', STR_TO_DATE(\""+ newRent.rentedAt +"\", \"%Y-%m-%d\"),'"+newRent.willReturnAt+"')");
+            
+            
+           
+            
             
             //only saving in arraylist at the moment, will be stored and retrieved from db later on
             // allRentals.add(new Rental(movieId, CURRENTUSER.userName));
@@ -72,7 +77,7 @@ public class MoviesHandler {
             System.out.println("Press any key to go back to main menu");
             waitInput();
             appCompleted = true;
-            return newRent;
+            
         } while (!appCompleted);
     }
 
