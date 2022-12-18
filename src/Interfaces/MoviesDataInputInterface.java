@@ -13,5 +13,5 @@ import java.util.List;
  * @author diese
  */
 public interface MoviesDataInputInterface {
-    public List<String> ReadMoviesData() throws FileNotFoundException, IOException;
+    public List<String[]> ReadMoviesData() throws FileNotFoundException, IOException;
 }

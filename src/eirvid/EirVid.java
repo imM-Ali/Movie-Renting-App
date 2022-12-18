@@ -25,23 +25,26 @@ import java.util.logging.Logger;
  */
 public class EirVid {
     
-    //initializing as String for the moment, will be a USER class object later on
-    private static String CURRENTUSER = "Ali";
+    
+    private static User CURRENTUSER = new User("Ali","pass");
     static Scanner keyboard = new Scanner(System.in);
-    static List<Rental> allRentals = new ArrayList<>();
-    static DBConnection database = new DBConnection();
+    static List<Rental> allRentals = new ArrayList<>();    
        
     
     public static void main(String[] args) throws FileNotFoundException, IOException {        
-        try {
-            MoviesDataInput movieDataInput = new MoviesDataInput();
-            MoviesValidatorInterface movieValidator = new MovieValidator();
-            MoviesMapperInterface movieMapper = new MovieMapper();
-            MoviesParserInterface movieParser = new MovieParser(movieValidator, movieMapper);
+       try {
+           
+           //Workflow ->Movie processor calls for Movies Data Input -> Movies Data Parsed -> Movies data validated -> Movies data mapped -> mapped data returned to main class
+            var allMovies = new MovieProcessor().ProcessMovies();            
+            //all movies are in here           
+            //to display
+            allMovies.forEach(movie->{
+                System.out.println(movie.title);
+                System.out.println(movie.price);
+            });
             
-            MovieProcessor mp = new MovieProcessor(movieDataInput, movieParser, database);
-            mp.ProcessMovies();
-            database.ConnectDatabase(CURRENTUSER);
+            
+            //database.ConnectDatabase(CURRENTUSER);
             
             //1)moviesDataInput
             //2)moviesParse
@@ -89,7 +92,7 @@ public class EirVid {
             //4) rentedAt - the time this movie was rented at
             
             
-            openShop(CURRENTUSER);
+            openShop(CURRENTUSER.userName);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EirVid.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -121,7 +124,7 @@ public class EirVid {
                 }
                 case 2 -> {
                     //reading all movies line by line and storing in an array list named movies
-                    BufferedReader csv = new BufferedReader(new FileReader("C:\\Users\\ohter\\Desktop\\RT-Player\\src\\Movie_Metadata_Edited_2.csv"));
+                    BufferedReader csv = new BufferedReader(new FileReader("src/Movie_Metadata_Edited_2.csv"));
                     ArrayList<String[]> movies = new ArrayList<>();
                     String line ="";
                     while((line = csv.readLine())!=null){                        
@@ -133,6 +136,7 @@ public class EirVid {
                         
                         //to split by each movie
                         System.out.println(movies.indexOf(movie)+") "+ Arrays.toString(movie));
+                        
                         
                     });
                     

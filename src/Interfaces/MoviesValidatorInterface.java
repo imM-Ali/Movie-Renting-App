@@ -4,6 +4,8 @@
  */
 package Interfaces;
 
+import java.util.List;
+
 /**
  *
  * @author diese

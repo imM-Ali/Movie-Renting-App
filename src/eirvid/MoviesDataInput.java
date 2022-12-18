@@ -24,11 +24,14 @@ public class MoviesDataInput implements MoviesDataInputInterface {
     }
     
     @Override
-    public List<String> ReadMoviesData() throws FileNotFoundException, IOException {
-        List<String> movieData = new ArrayList<>();
-        String inputLine = myReader.readLine();
-        while ((inputLine = myReader.readLine()) != null) {
-            movieData.add(inputLine);
+    public List<String[]> ReadMoviesData() throws FileNotFoundException, IOException {
+        //creates a list of String arrays where each list index is a row in CSV and each array index is a column in that row
+        
+        List<String[]> movieData = new ArrayList<>();
+        String inputLine = "";
+        while ((inputLine = myReader.readLine())!=null) {            
+            movieData.add(inputLine.split(","));
+            
         }
         return movieData;
     }

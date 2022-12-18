@@ -4,7 +4,7 @@
  */
 package Interfaces;
 
-import eirvid.MovieTitle;
+import eirvid.Movie;
 import java.util.List;
 
 /**
@@ -12,5 +12,5 @@ import java.util.List;
  * @author diese
  */
 public interface MoviesParserInterface {
-    public List<MovieTitle> ParseMovies(List<String> lines);
+    public List<Movie> ParseMovies(List<String[]> lines);
 }

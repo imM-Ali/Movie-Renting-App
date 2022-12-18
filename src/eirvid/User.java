@@ -4,10 +4,27 @@
  */
 package eirvid;
 
+import java.util.List;
+
+
+
 /**
  *
  * @author 35389
  */
 public class User {
+     int id; //this will be auto incremented in database
+     String userName;
+     String password; 
+     List<Movie> rentalHistory;
+     
+     public User(String _userName, String _password){
+        
+        
+        this.password = _password;
+        this.userName = _userName;
+        
+        
+    }
     
 }

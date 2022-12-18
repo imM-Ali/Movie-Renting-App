@@ -4,12 +4,12 @@
  */
 package Interfaces;
 
-import eirvid.MovieTitle;
+import eirvid.Movie;
 
 /**
  *
  * @author diese
  */
 public interface MoviesMapperInterface {
-    public MovieTitle Map(String[] fields);
+    public Movie Map(String[] fields);
 }

@@ -8,7 +8,7 @@ package eirvid;
  *
  * @author diese
  */
-public class MovieTitle {
+public class Movie{
     String orgLang;
     String orgTitle;
     String overview;
@@ -21,7 +21,7 @@ public class MovieTitle {
     int voteCount;
     double price;
 
-    public MovieTitle(String orgLang, String orgTitle, String overview, double popularity, String releaseDate, int runtime, String tagline, String title, double voteAvg, int voteCount, double price) {
+    public Movie(String orgLang, String orgTitle, String overview, double popularity, String releaseDate, int runtime, String tagline, String title, double voteAvg, int voteCount, double price) {
         this.orgLang = orgLang;
         this.orgTitle = orgTitle;
         this.overview = overview;

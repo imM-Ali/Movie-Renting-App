@@ -15,7 +15,13 @@ import java.util.Date;
  */
 public class MovieValidator implements MoviesValidatorInterface{
     @Override
-    public boolean Validate(String[] fields) {
+    public boolean Validate(String[] fields) {      
+        
+       
+        
+        
+        
+        
         if (fields.length != 11) {
             System.out.println("Warning: Incorrect number of fields");
             return false;
@@ -54,7 +60,7 @@ public class MovieValidator implements MoviesValidatorInterface{
 
         int runtime = -1;
         try {
-            runtime = Integer.parseInt(fields[5]);
+            runtime = Integer.parseInt(fields[5].trim());
         } 
         catch (Exception e) {
              System.out.println("Warning: Movie runtime is not a valid integer");
@@ -80,7 +86,7 @@ public class MovieValidator implements MoviesValidatorInterface{
         
         int voteCount = -1;
         try {
-            voteCount = Integer.parseInt(fields[9]);
+            voteCount = Integer.parseInt(fields[9].trim());
         } 
         catch (Exception e) {
              System.out.println("Warning: Movie vote count is not a valid integer");
@@ -92,6 +98,7 @@ public class MovieValidator implements MoviesValidatorInterface{
             moviePrice = Double.parseDouble(fields[10]);
         } 
         catch (Exception e) {
+            System.out.println(e);
              System.out.println("Warning: Movie price not a valid decimal");
              return false;
         }

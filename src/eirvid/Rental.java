@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author ohter
+ * @author Muhammad Ali
  */
 public class Rental {
     
