@@ -31,6 +31,7 @@ public class EirVid {
     static Scanner keyboard = new Scanner(System.in);
     static List<Rental> allRentals = new ArrayList<>();
     static Statement stmt;
+    static Connection conn;
     public static void main(String[] args) throws FileNotFoundException, IOException, SQLException, ParseException {
         try {
 
@@ -49,7 +50,7 @@ public class EirVid {
             String PASS = "asdf";
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             try {
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/", USER, PASS);
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/", USER, PASS);
                 stmt = conn.createStatement();
                 stmt.execute("CREATE SCHEMA IF NOT EXISTS " + dbName + ";");
                 stmt.execute("USE " + dbName + ";");
@@ -199,18 +200,12 @@ public class EirVid {
                     
                  attempt.rentMovie(_currentUser);
                     
-                  
-                  
-                  
-                  
-                  
-                  
                 }
                 case 3 -> {
                     //will add movie return mechanism here
                 }
                 case 4 -> {
-
+                    attempt.viewMovies(_currentUser);
                     //for the moment, gets all rented movies from a list of allRentals,
                     //when db is up, we will get this from db
                     

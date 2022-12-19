@@ -62,6 +62,7 @@ public class loginHandler {
                 done=1;
             }else{
                 System.out.println("User not found! Try again");
+                done=1;
             }
             
         }while(done!=1);
