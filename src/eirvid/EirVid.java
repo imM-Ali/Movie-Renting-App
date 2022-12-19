@@ -105,6 +105,7 @@ public class EirVid {
                             attempt.signUp();
                         }
                         case 3 -> {
+                            //https://www.scaler.com/topics/java/exit-in-java/
                             System.exit(0);
                         }
                         default -> {
