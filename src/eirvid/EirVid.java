@@ -14,7 +14,7 @@ import java.text.ParseException;
 public class EirVid {
 
     private static User CURRENTUSER = null;
-    static Scanner keyboard = new Scanner(System.in);   
+    static Scanner keyboard = new Scanner(System.in);
     static Statement stmt;
     static Connection conn;
     static MoviesHandler engine = new MoviesHandler();
@@ -78,7 +78,7 @@ public class EirVid {
     //4) rentedAt - the time this movie was rented at
     public static void handleLogin() throws SQLException, IOException, FileNotFoundException, ParseException {
 
-        int input;
+        String input;
         stmt.execute("CREATE TABLE IF NOT EXISTS Users "
                 + "(id INT NOT NULL AUTO_INCREMENT UNIQUE,"
                 + "userName VARCHAR(512) NOT NULL,"
@@ -90,18 +90,37 @@ public class EirVid {
             System.out.println("""
                                Please select one of the following options
                                1)Login
-                               2)Signup """
+                               2)Signup
+                               3)Exit"""
             );
-            input = keyboard.nextInt();
             loginHandler attempt = new loginHandler();
-            switch (input) {
-                case 1 -> {
-                    attempt.login();
+            while (true) {
+                try {
+                    input = keyboard.next();
+                    switch (Integer.parseInt(input)) {
+                        case 1 -> {
+                            attempt.login();
+                        }
+                        case 2 -> {
+                            attempt.signUp();
+                        }
+                        case 3 -> {
+                            System.exit(0);
+                        }
+                        default -> {
+                            System.out.println("Invalid selection! Try again");
+                            System.out.println("----------------------------------------");
+                        }
+                    }
+
+                } catch (Exception e) {  
+                     System.out.println("Invalid selection! Try again");
+                            System.out.println("----------------------------------------");
+                    
                 }
-                case 2 -> {
-                    attempt.signUp();
-                }
+                break;
             }
+
         } while (CURRENTUSER == null);
 
     }
@@ -131,7 +150,6 @@ public class EirVid {
                                5)Logout.
                                6)Exit the shop""");
 
-            
             //handling inputmismatch exception
             //https://stackoverflow.com/questions/16816250/java-inputmismatchexception
             while (true) {
@@ -175,7 +193,7 @@ public class EirVid {
             }
 
         } while (input != 6);
-
+        System.exit(0);
     }
 
     public static void waitInput() {
