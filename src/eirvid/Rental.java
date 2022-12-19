@@ -17,7 +17,9 @@ public class Rental {
         
         
         this.movieId = _movieId;
-        this.userId = _userId;        
+        this.userId = _userId;   
+        //converting dates to SQL.Date so that sql accepts the format
+        //https://www.youtube.com/watch?v=lTwHw80E0Ww&ab_channel=Dr.Rafeeq
         Calendar c = Calendar.getInstance();
         c.setTime(this.rentedAt);
         c.add(Calendar.DATE, _willReturnAfter);
