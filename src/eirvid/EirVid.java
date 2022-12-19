@@ -2,8 +2,6 @@ package eirvid;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,19 +11,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 
-
 public class EirVid {
 
     private static User CURRENTUSER = null;
-    static Scanner keyboard = new Scanner(System.in);
-    static List<Rental> allRentals = new ArrayList<>();
+    static Scanner keyboard = new Scanner(System.in);   
     static Statement stmt;
     static Connection conn;
-    static String dbName = "RTPlayer";
     static MoviesHandler engine = new MoviesHandler();
+
     public static void main(String[] args) throws FileNotFoundException, IOException, SQLException, ParseException {
 
-        String DB_URL = "jdbc:mysql://localhost/" + dbName;
         String USER = "root";
         String PASS = "asdf";
 
@@ -34,17 +29,21 @@ public class EirVid {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/", USER, PASS);
             stmt = conn.createStatement();
             engine.populateMovies();
+            System.out.println("Processing successfull");
+            System.out.println("----------------------------------\n");
             handleLogin();
 
         } catch (SQLException e) {
+            System.out.println("---FOR DEVELOPMENT PURPOSE ONLY---");
+            System.out.println("Incorrect Database Credentials");
+            System.out.println("Please make sure your database credentials match the credentials in the main class.");
+            System.out.println("----------------------------------");
 
-            e.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EirVid.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             Logger.getLogger(EirVid.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
 
     }
 
@@ -77,10 +76,9 @@ public class EirVid {
     //2) movieID - the id of movie that has been rented
     //3) userId - the Id of user who has rented this movie
     //4) rentedAt - the time this movie was rented at
-    
     public static void handleLogin() throws SQLException, IOException, FileNotFoundException, ParseException {
+
         int input;
-        //System.out.println(CURRENTUSER.userName + ", Welcome to EirVid - Movie Rentals");
         stmt.execute("CREATE TABLE IF NOT EXISTS Users "
                 + "(id INT NOT NULL AUTO_INCREMENT UNIQUE,"
                 + "userName VARCHAR(512) NOT NULL,"
@@ -119,9 +117,10 @@ public class EirVid {
         );
 
         System.out.println("\nWELCOME TO OUR SHOP - " + _currentUser.userName);
+        System.out.println("----------------------------------------");
         System.out.println("\nPLEASE NOTE MINIMUM RENT DURATION IS 1 DAY");
+        System.out.println("----------------------------------------");
         int input;
-        
         do {
             System.out.println("""
                                Please select one of the following options
@@ -131,7 +130,21 @@ public class EirVid {
                                4)Display my movies
                                5)Exit the shop""");
 
-            input = keyboard.nextInt();
+            
+            //handling inputmismatch exception
+            //https://stackoverflow.com/questions/16816250/java-inputmismatchexception
+            while (true) {
+                try {
+                    input = keyboard.nextInt();
+
+                } catch (Exception e) {
+                    System.out.println("Please select a valid option");
+                    keyboard.nextLine();
+                    continue;
+                }
+                break;
+            }
+
             switch (input) {
                 case 1 -> {
                     //top 5 movies which appear most in rentals table in tb will appear here.

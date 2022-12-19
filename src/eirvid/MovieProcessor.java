@@ -26,12 +26,13 @@ public class MovieProcessor {
     
  
     public List<Movie> ProcessMovies() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        System.out.println("Reading movies from CSV....");
         List<String[]> lines = movieDataInput.ReadMoviesData(); 
         //removing the first row (because it only gives the field labels)
         lines.remove(0); 
         
         
-        //turns our raw csv data that was read in moviesdatainput class into a map with key value pairs, like title price popularity etc. 
+        //turns our raw csv data that was read in moviesdatainput class into a map with key value pairs, like title price popularity etc.        
         List<Movie> movies = movieParser.ParseMovies(lines);
         
         //returns meaningful data with key value pairs

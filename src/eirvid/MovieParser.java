@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+public class MovieParser implements MoviesParserInterface {
 
-public class MovieParser implements MoviesParserInterface{
     private MoviesValidatorInterface movieValidator;
     private MoviesMapperInterface movieMapper;
 
@@ -16,17 +16,18 @@ public class MovieParser implements MoviesParserInterface{
         this.movieValidator = movieValidator;
         this.movieMapper = movieMapper;
     }
-    
+
     public List<Movie> ParseMovies(List<String[]> lines) {
-        List<Movie> movies = new ArrayList<>();        
+        List<Movie> movies = new ArrayList<>();
+        System.out.println("Validating data....");
         lines.forEach(line -> {
-            String[] fields = Arrays.toString(line).replace("[", "").replace("]", "").split(","); 
-            
+            String[] fields = Arrays.toString(line).replace("[", "").replace("]", "").split(",");
+
             if (movieValidator.Validate(fields)) {
                 movies.add(movieMapper.Map(fields));
             }
-        
-        });        
+
+        });
         return movies;
     }
 }

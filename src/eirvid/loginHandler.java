@@ -24,12 +24,16 @@ public class loginHandler {
         do {
             if (allUsers.next()) {
                 if (allUsers.getString(2).equalsIgnoreCase(newUser.userName)) {
+                    System.out.println("----------------------------------------");
                     System.out.println("User already exists, please login instead");
+                    System.out.println("----------------------------------------\n");
                     done =1;
                 }
             } else {
                 stmt.execute("INSERT INTO Users(userName, password, history) VALUES ('" + newUser.userName + "','" + newUser.password + "','" + newUser.rentalHistory + "')");
+                System.out.println("----------------------------------------\n");
                 System.out.println("Signed up successfully!");
+                System.out.println("----------------------------------------\n");
                 done=1;
             }
         } while (done != 1);
