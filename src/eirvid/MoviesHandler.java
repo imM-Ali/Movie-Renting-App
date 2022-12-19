@@ -3,8 +3,6 @@ package eirvid;
 import static eirvid.EirVid.conn;
 import static eirvid.EirVid.keyboard;
 import static eirvid.EirVid.stmt;
-import static eirvid.EirVid.waitInput;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +17,7 @@ public class MoviesHandler {
         try {
             //Workflow ->Movie processor calls for Movies Data Input -> Movies Data Parsed -> Movies data validated -> Movies data mapped -> mapped data returned to main class
             //This brings all the movies from CSV to DB
-            
+
             String dbName = "RTPlayer";
             var allMovies = new MovieProcessor().ProcessMovies();
             System.out.println("Creating DB with Movies Table....");
@@ -44,6 +42,8 @@ public class MoviesHandler {
             System.out.println("Pushing Movies To DB....");
             for (Movie movie : allMovies) {
                 stmt.execute(
+                        //Using ignore keyword so that if SQL returns with a duplicate error it will ignore that record and go to the next one
+                        //https://www.tutorialspoint.com/mysql/mysql-handling-duplicates.htm#:~:text=Use%20the%20INSERT%20IGNORE%20command,silently%20without%20generating%20an%20error.
                         "INSERT IGNORE INTO movies(org_language,org_title,overview,popularity,release_date,runtime,tagline,title,vote_avg,vote_count,price,isAvailable) VALUES "
                         + "('" + movie.orgLang + "',"
                         + "'" + movie.title.strip() + "',"
@@ -61,13 +61,13 @@ public class MoviesHandler {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(MoviesHandler.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Cannot process movies, please make sure CSV is in src folder and named Movie_Metadata_Edited_2");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MoviesHandler.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Fatal Error, Class files not found, please reclone the repository");
         } catch (InstantiationException ex) {
-            Logger.getLogger(MoviesHandler.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Cannot process movies, please make sure CSV is in CCT Format");
         } catch (SQLException ex) {
-            Logger.getLogger(MoviesHandler.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("CSV Data incorrect, please use a CSV with movies in CCT Format");
         }
     }
 
@@ -91,9 +91,6 @@ public class MoviesHandler {
             System.out.println("----------------------------------------");
         }
 
-        //asking user for the Id of the movie he wants to rent, as soon as he selects
-        //a rental object is created with his Id (for the moment I only have name) against the 
-        //movie he selected. This object will be stored in the rentals table in database later on.
     }
 
     public void viewMovies(User user) throws SQLException {
