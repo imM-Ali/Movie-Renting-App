@@ -171,6 +171,9 @@ public class MoviesHandler {
                 while (true) {
                     try {
                         numOfDays = keyboard.nextInt();
+                        if(numOfDays<1){
+                            throw new Exception();
+                        }
 
                     } catch (Exception e) {
                         System.out.println("Please Enter a Valid Number of Days");
@@ -200,7 +203,7 @@ public class MoviesHandler {
                 System.out.println("\n----------------------------------------");
                 System.out.println("Successfully Rented movie ID: " + newRent.movieId + "!");
                 System.out.println("Please pay " + price.getDouble("price") * numOfDays + " at the counter, thank you!\n");
-                System.out.println("Press any key to go back to main menu");
+                System.out.println("\n----------------------------------------");
 
                 appCompleted = true;
             } catch (Exception e) {
