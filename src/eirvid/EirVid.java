@@ -157,7 +157,7 @@ public class EirVid {
 
                 }
                 case 3 -> {
-                    //will add movie return mechanism here
+                    engine.returnMovie(_currentUser);
                 }
                 case 4 -> {
                     engine.viewMovies(_currentUser);

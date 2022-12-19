@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,7 +74,7 @@ public class MoviesHandler {
 
     public void viewMovies() throws SQLException {
 
-        ResultSet dbMovies = stmt.executeQuery("SELECT * FROM movies");
+        ResultSet dbMovies = stmt.executeQuery("SELECT * FROM movies Where isAvailable = true");
         //map - indexing starts at 1
         //1-ID
         //2-Language
@@ -119,82 +120,146 @@ public class MoviesHandler {
 
     }
 
-    public void rentMovie(User currentUser) throws SQLException, ParseException {
-        boolean appCompleted;
+    public void rentMovie(User currentUser) {
+        boolean appCompleted = false;
         int numOfDays;
-        do {
-            Boolean isAvailable = false;
-            int movieId;
 
-            //asking user for the Id of the movie he wants to rent, as soon as he selects
-            //a rental object is created with his Id against the movie he selected. This object will be stored in the rentals table in database.
-            do {
-                System.out.println("Please enter the Id of the movie you want to rent");
+        do {
+            try {
+                Boolean isAvailable = false;
+                String movieId;
+
+                //asking user for the Id of the movie he wants to rent, as soon as he selects
+                //a rental object is created with his Id against the movie he selected. This object will be stored in the rentals table in database.
+                do {
+                    System.out.println("Please enter the Id of the movie you want to rent\nPress B to go to main menu");
+                    //handling inputmismatch exception
+                    while (true) {
+                        try {
+                            movieId = keyboard.next();
+
+                        } catch (Exception e) {
+                            System.out.println("Please select a valid option");
+                            keyboard.nextLine();
+                            continue;
+                        }
+                        break;
+                    }
+                    if (movieId.equalsIgnoreCase("b") && movieId.matches("[a-zA-Z]")) {
+                        break;
+                    } else {
+
+                        ResultSet rs = stmt.executeQuery("SELECT * FROM movies WHERE id=" + Integer.valueOf(movieId) + "");
+                        if (!rs.next()) {
+                            System.out.println("Movie not in Record");
+
+                        } else {
+                            //if movie is visible in our shop, we check if it is already rented out.
+                            //this makes sure that a user cannot select a movie Id which is not visible
+                            isAvailable = rs.getBoolean(13);
+                            if (!isAvailable) {
+                                System.out.println("Movie not available");
+                            }
+                        }
+                    }
+
+                } while (!isAvailable);
+                if (isAvailable == false) {
+                    break;
+                }
+                System.out.println("How long do you want to rent for? Enter number of days");
+
                 //handling inputmismatch exception
                 while (true) {
                     try {
-                        movieId = keyboard.nextInt();
+                        numOfDays = keyboard.nextInt();
 
                     } catch (Exception e) {
-                        System.out.println("Please select a valid option");
+                        System.out.println("Please Enter a Valid Number of Days");
                         keyboard.nextLine();
                         continue;
                     }
                     break;
                 }
-                ResultSet rs = stmt.executeQuery("SELECT * FROM movies WHERE id=" + movieId + "");
-                if (rs.next()) {
-                    //if movie is visible in our shop, we check if it is already rented out.
-                    //this makes sure that a user cannot select a movie Id which is not visible
-                    isAvailable = rs.getBoolean(13);
-                    if (!isAvailable) {
-                        System.out.println("Movie not available");
-                    }
+
+                Rental newRent = new Rental(Integer.parseInt(movieId), currentUser.id, numOfDays);
+                //update rentals table
+                stmt.execute("INSERT INTO Rentals(movieId, userId, rentedAt, returnAt) VALUES ('" + newRent.movieId + "','" + newRent.userId + "', STR_TO_DATE(\"" + newRent.rentedAt + "\", \"%Y-%m-%d\"),'" + newRent.willReturnAt + "')");
+                //set the isAvailable field of this movie to not available
+                stmt.execute("update movies set isAvailable = false where id = " + newRent.movieId + "; ");
+                String userHistory = currentUser.rentalHistory;
+                if (userHistory == "") {
+                    userHistory = userHistory.concat("" + newRent.movieId + "");
                 } else {
-                    System.out.println("Movie not in Record");
+                    userHistory = userHistory.concat("," + newRent.movieId + "");
                 }
-            } while (!isAvailable);
+                //update users rental history
+                stmt.execute("update users set history = '" + userHistory + "' Where id = (" + newRent.userId + ")");
 
-            System.out.println("How long do you want to rent for? Enter number of days");
+                ResultSet price = stmt.executeQuery("SELECT price FROM rtplayer.movies where id = " + newRent.movieId + "");
+                price.next();
+                //displays a success message with the ID and Price of the movie  
+                System.out.println("\n----------------------------------------");
+                System.out.println("Successfully Rented movie ID: " + newRent.movieId + "!");
+                System.out.println("Please pay " + price.getDouble("price") * numOfDays + " at the counter, thank you!\n");
+                System.out.println("Press any key to go back to main menu");
 
-            //handling inputmismatch exception
+                appCompleted = true;
+            } catch (Exception e) {
+                System.out.println("Enter a valid response");
+                continue;
+            }
+
+        } while (!appCompleted);
+
+    }
+
+    public void returnMovie(User _user) {
+        String movieId;
+
+        try {
+            Statement tempState = conn.createStatement();
+            System.out.println("Please enter a valid ID of the Movie you want to return");
             while (true) {
                 try {
-                    numOfDays = keyboard.nextInt();
+                    movieId = keyboard.next();
+                    if (movieId.equalsIgnoreCase("b") && movieId.matches("[a-zA-Z]")) {
+                        System.out.println("----------------------------------------\n");
+                    } else {
+                        ResultSet RentalForUser = stmt.executeQuery("SELECT * FROM rentals WHERE userId = " + _user.id + " AND movieId = " + Integer.valueOf(movieId) + "");
+                        if (!RentalForUser.next()) {
+                            System.out.println("Please enter a valid movie ID which was rented to you\nPress B to go back to main menu");
+                            continue;
+
+                        } else {
+                            ResultSet correspondingMovie = tempState.executeQuery("SELECT * FROM movies WHERE id = " + Integer.valueOf(movieId) + "");
+                            correspondingMovie.next();
+                            System.out.println("----------------------------------------");
+                            System.out.println("Now returning:\n" + correspondingMovie.getString("title") + ", which was rented out at " + RentalForUser.getDate("rentedAt") + "\n");
+                            System.out.println("----------------------------------------");
+                            tempState.execute("update movies set isAvailable = true where id = " + RentalForUser.getString("movieId") + "; ");
+                            if (new java.sql.Date(new Date().getTime()).compareTo(RentalForUser.getDate("returnAt")) > 0) {
+                                System.out.println("WARNING! MOVIE WAS HELD FOR MORE THAN REQUESTED TIME\n");
+                                System.out.println("You have been fined an additional");
+                                System.out.println("----------------------------------------\n");
+
+                            }
+
+                        }
+                    }
 
                 } catch (Exception e) {
-                    System.out.println("Please Enter a Valid Number of Days");
+                    System.out.println("Please enter a numeric Id");
                     keyboard.nextLine();
                     continue;
                 }
                 break;
             }
 
-            Rental newRent = new Rental(movieId, currentUser.id, numOfDays);
-            //update rentals table
-            stmt.execute("INSERT INTO Rentals(movieId, userId, rentedAt, returnAt) VALUES ('" + newRent.movieId + "','" + newRent.userId + "', STR_TO_DATE(\"" + newRent.rentedAt + "\", \"%Y-%m-%d\"),'" + newRent.willReturnAt + "')");
-            //set the isAvailable field of this movie to not available
-            stmt.execute("update movies set isAvailable = false where id = " + newRent.movieId + "; ");
-            String userHistory = currentUser.rentalHistory;
-            if (userHistory == "") {
-                userHistory = userHistory.concat("" + newRent.movieId + "");
-            } else {
-                userHistory = userHistory.concat("," + newRent.movieId + "");
-            }
-            //update users rental history
-            stmt.execute("update users set history = '" + userHistory + "' Where id = (" + newRent.userId + ")");
+        } catch (SQLException ex) {
+            System.out.println("This rental was not found in DB");
+        }
 
-            ResultSet price = stmt.executeQuery("SELECT price FROM rtplayer.movies where id = " + newRent.movieId + "");
-            price.next();
-            //displays a success message with the ID and Price of the movie  
-            System.out.println("\n----------------------------------------");
-            System.out.println("Successfully Rented movie ID: " + newRent.movieId + "!");
-            System.out.println("Please pay " + price.getDouble("price") * numOfDays + " at the counter, thank you!\n");
-            System.out.println("Press any key to go back to main menu");
-
-            appCompleted = true;
-
-        } while (!appCompleted);
     }
 
 }
