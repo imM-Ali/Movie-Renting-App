@@ -1,26 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package eirvid;
 
-import java.text.DateFormat;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- *
- * @author Muhammad Ali
- */
 public class Rental {
 
     int id; //this will be auto incremented in database
     int movieId;
     int userId;    
-    java.util.Date rentedAt = new Date();
-    java.sql.Date sqlDate;
+    java.util.Date rentedAt = new Date();    
     Date willReturnAt;
   
     public Rental(int _movieId, int _userId, int _willReturnAfter) throws ParseException {        

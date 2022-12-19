@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package eirvid;
 
 import Interfaces.MoviesDataInputInterface;
@@ -12,10 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author diese
- */
+
 public class MoviesDataInput implements MoviesDataInputInterface {
     BufferedReader myReader;
     String fileName = "src/Movie_Metadata_Edited_2.csv";

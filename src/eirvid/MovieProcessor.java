@@ -1,22 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package eirvid;
 
 import Interfaces.MoviesMapperInterface;
 import Interfaces.MoviesParserInterface;
 import Interfaces.MoviesValidatorInterface;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-/**
- *
- * @author diese
- */
+
 public class MovieProcessor {
     
     

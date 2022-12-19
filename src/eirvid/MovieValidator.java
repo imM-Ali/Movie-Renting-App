@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package eirvid;
 
 import Interfaces.MoviesValidatorInterface;
@@ -9,18 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- *
- * @author diese
- */
+
 public class MovieValidator implements MoviesValidatorInterface{
     @Override
     public boolean Validate(String[] fields) {      
-        
-       
-        
-        
-        
         
         if (fields.length != 11) {
             System.out.println("Warning: Incorrect number of fields");

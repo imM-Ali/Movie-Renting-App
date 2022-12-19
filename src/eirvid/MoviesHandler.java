@@ -1,23 +1,74 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package eirvid;
 
 import static eirvid.EirVid.conn;
+import static eirvid.EirVid.dbName;
 import static eirvid.EirVid.keyboard;
 import static eirvid.EirVid.stmt;
 import static eirvid.EirVid.waitInput;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author ohter
- */
+
 public class MoviesHandler {
+    
+    public void populateMovies() throws IllegalAccessException{
+        try {
+            //Workflow ->Movie processor calls for Movies Data Input -> Movies Data Parsed -> Movies data validated -> Movies data mapped -> mapped data returned to main class
+            //This brings all the movies from CSV to DB
+            
+            var allMovies = new MovieProcessor().ProcessMovies();
+            stmt.execute("CREATE SCHEMA IF NOT EXISTS " + dbName + ";");
+                stmt.execute("USE " + dbName + ";");
+                stmt.execute("CREATE TABLE IF NOT EXISTS Movies "
+                        + "(id INT NOT NULL AUTO_INCREMENT UNIQUE,"
+                        + "org_language VARCHAR(512) NOT NULL,"
+                        + "org_title VARCHAR(512) NOT NULL UNIQUE,"
+                        + "overview TEXT NOT NULL,"
+                        + "popularity DOUBLE NOT NULL,"
+                        + "release_date DATE NOT NULL,"
+                        + "runtime INT NOT NULL,"
+                        + "tagline varchar(512) NOT NULL,"
+                        + "title VARCHAR(512) NOT NULL,"
+                        + "vote_avg DOUBLE NOT NULL,"
+                        + "vote_count INT NOT NULL,"
+                        + "price DOUBLE NOT NULL,"
+                        + "isAvailable BOOLEAN NOT NULL,"                        
+                        + "PRIMARY KEY (id));"
+                );
+                for (Movie movie : allMovies) {                    
+                    stmt.execute(
+                            "INSERT IGNORE INTO movies(org_language,org_title,overview,popularity,release_date,runtime,tagline,title,vote_avg,vote_count,price,isAvailable) VALUES "
+                            + "('" + movie.orgLang + "',"
+                            + "'"+ movie.title.strip() +"',"
+                            + "'" + movie.overview.strip() + "',"
+                            + "" + movie.popularity + ","
+                            + "STR_TO_DATE(\""+ movie.releaseDate.trim() +"\", \"%d/%m/%Y\"),"
+                            + "" + movie.runtime + ","
+                            + "'" + movie.tagline + "',"
+                            + "'" + movie.title + "',"
+                            + "" + movie.voteAvg + ","
+                            + "" + movie.voteCount + ","
+                            + "" + movie.price + ","
+                            + "" + movie.isAvailable + ")"
+                            
+                              );
+                }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(MoviesHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MoviesHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(MoviesHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MoviesHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void viewMovies() throws SQLException {
 
