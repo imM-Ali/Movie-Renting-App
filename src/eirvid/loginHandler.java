@@ -41,17 +41,20 @@ public class loginHandler {
     }
 
     public void login() throws SQLException, IOException, FileNotFoundException, ParseException {
+        System.out.println("----------------------------------------");
         System.out.println("LOGIN FORM\n");
         User newUser = new User();
         System.out.print("Please Enter Username: ");
         newUser.userName = keyboard.next();
-        System.out.print("\nPlease Enter Password: ");
+        System.out.print("Please Enter Password: ");
         newUser.password = keyboard.next();
         allUsers = stmt.executeQuery("SELECT * FROM Users WHERE userName='" + newUser.userName + "' AND password='" + newUser.password + "'");
         int done = 0;
         do{
             if(allUsers.next()){
+                System.out.println("----------------------------------------");
                 System.out.println("Logged in!");
+                System.out.println("----------------------------------------\n");
                 newUser.id = allUsers.getInt(1);
                 newUser.rentalHistory = allUsers.getString(4);
                 EirVid.openShop(newUser);

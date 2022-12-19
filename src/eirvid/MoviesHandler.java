@@ -6,11 +6,9 @@ import static eirvid.EirVid.stmt;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.sql.Statement;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class MoviesHandler {
 

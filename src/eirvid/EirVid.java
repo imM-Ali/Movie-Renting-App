@@ -116,19 +116,20 @@ public class EirVid {
                 + "PRIMARY KEY (id));"
         );
 
-        System.out.println("\nWELCOME TO OUR SHOP - " + _currentUser.userName);
+        System.out.println("WELCOME TO OUR SHOP - " + _currentUser.userName);
         System.out.println("----------------------------------------");
-        System.out.println("\nPLEASE NOTE MINIMUM RENT DURATION IS 1 DAY");
-        System.out.println("----------------------------------------");
+        System.out.println("PLEASE NOTE MINIMUM RENT DURATION IS 1 DAY");
+        System.out.println("----------------------------------------\n");
         int input;
         do {
             System.out.println("""
                                Please select one of the following options
-                               1)View Recommended Movies
-                               2)Rent a movie
-                               3)Return a movie
-                               4)Display my movies
-                               5)Exit the shop""");
+                               1)View Recommended Movies.
+                               2)Select a movie to Rent.
+                               3)Return a movie.
+                               4)Display my current rented movies.
+                               5)Logout.
+                               6)Exit the shop""");
 
             
             //handling inputmismatch exception
@@ -162,11 +163,18 @@ public class EirVid {
                 case 4 -> {
                     engine.viewMovies(_currentUser);
                 }
-                case 5 ->
+                case 5 -> {
+                    CURRENTUSER = null;
+                    System.out.println("----------------------------------------");
+                    System.out.println("Logged out!");
+                    System.out.println("----------------------------------------\n");
+                    handleLogin();
+                }
+                case 6 ->
                     System.out.println("See you next time!");
             }
 
-        } while (input != 5);
+        } while (input != 6);
 
     }
 
