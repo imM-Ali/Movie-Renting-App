@@ -21,12 +21,12 @@ public class EirVid {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, SQLException, ParseException {
 
-        String USER = "root";
-        String PASS = "asdf";
+        String dbUSER = "root";
+        String dbPASS = "asdf";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/", USER, PASS);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/", dbUSER, dbPASS);
             stmt = conn.createStatement();
             engine.populateMovies();
             System.out.println("Processing successfull");
@@ -39,43 +39,12 @@ public class EirVid {
             System.out.println("Please make sure your database credentials match the credentials in the main class.");
             System.out.println("----------------------------------");
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EirVid.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (ClassNotFoundException | IllegalAccessException ex) {
             Logger.getLogger(EirVid.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
-    //1)moviesDataInput
-    //2)moviesParse
-    //USE SQLSERVER WITH THESE CREDS - THEN CREATE TABLES AS NEEDED -- DONT REMOVE PLEASE//
-    //String connectionUrl = "jdbc:mysql://localhost/RTPlayer";
-    //String connectionUser = "Rental";
-    //String connectionPassword = "Rental";
-    //---------------NEED SEPERATE CLASSES FOR THESE----------------------//
-    //3) move all the movie projects to database table named 'movies' with appropriate properties/labels,
-    // this table will have all properties from csv plus additional property named 'isAvailable'
-    //isAvailable will be a boolean and stay true unless the movie is rented out.
-    //4) login/signup =For signup, If it doesnt exist, Create a table in database named 'users' and add users there.
-    //for login, when user has entered credentials, check if it exists in database and set CURRENT_USER to this user.
-    //The users table will have the following attributes:
-    //1) Id
-    //2) userName
-    //3) password
-    //4) rentalHistory - this will be an array with all the Ids of movies this user has rented.
-    // MUHAMMAD ALI SHAHZAIB - 2020463
-    //5) renting process - When successfully logged in, will display menu:
-    // - View recommended movies (will display most rented movies, we will get this from rentals table)
-    // - Rent a movie (will display all movies so user can select - rented movie will save in rentals table)
-    // - Return a movie (user can return a movie if he wants to - will ask user for rental ID and his details)
-    // - Exit
-    //Requires a table in database named 'rentals'. All rented movies will be stored in that with unique rental ID.
-    //rentals rable will have the following attributes:
-    //1) Id - this will be rental ID - dont confuse this with movie id
-    //2) movieID - the id of movie that has been rented
-    //3) userId - the Id of user who has rented this movie
-    //4) rentedAt - the time this movie was rented at
     public static void handleLogin() throws SQLException, IOException, FileNotFoundException, ParseException {
 
         String input;
@@ -114,10 +83,10 @@ public class EirVid {
                         }
                     }
 
-                } catch (Exception e) {  
-                     System.out.println("Invalid selection! Try again");
-                            System.out.println("----------------------------------------");
-                    
+                } catch (IOException | NumberFormatException | SQLException | ParseException e) {
+                    System.out.println("Invalid selection! Try again");
+                    System.out.println("----------------------------------------");
+
                 }
                 break;
             }
@@ -195,10 +164,6 @@ public class EirVid {
 
         } while (input != 6);
         System.exit(0);
-    }
-
-    public static void waitInput() {
-        keyboard.next();
     }
 
 }
