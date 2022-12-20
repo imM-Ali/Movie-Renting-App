@@ -136,6 +136,8 @@ public class EirVid {
 
             switch (input) {
                 case 1 -> {
+                    
+                    engine.viewTopMovies();
                     //top 5 movies which appear most in rentals table in tb will appear here.
                     /*SELECT DISTINCT movies.title
                     FROM movies , rentals

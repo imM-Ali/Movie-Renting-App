@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class MoviesHandler {
@@ -103,7 +105,7 @@ public class MoviesHandler {
         System.out.println("Your Current Rentals\n");
 
         while (myRents.next()) {
-            ResultSet dbMovie = tempState.executeQuery("SELECT * FROM movies WHERE id=" + myRents.getString("movieId") + "");
+            ResultSet dbMovie = tempState.executeQuery("SELECT * FROM movies WHERE id=" + myRents.getString("movieId") + " AND isAvailable = false");
             while (dbMovie.next()) {
 
                 System.out.println("Movie Id: " + dbMovie.getString(1) + "\n");
@@ -261,6 +263,27 @@ public class MoviesHandler {
             System.out.println("This rental was not found in DB");
         }
 
+    }
+    
+    public void viewTopMovies(){
+        try {
+            ResultSet dbMovies = stmt.executeQuery("SELECT DISTINCT movies.title FROM movies , rentals  WHERE  movies.id IN (select movieId from rentals GROUP BY movieId ORDER BY COUNT(movieId) DESC ) limit 0,5;");
+             Statement tempState = conn.createStatement();
+            ResultSet timesRented = tempState.executeQuery("select COUNT(movieId) AS timesRented from rentals GROUP BY movieId ORDER BY COUNT(movieId) DESC limit 0,5");
+            
+            if(dbMovies.next() && timesRented.next()){
+                do{
+                     System.out.println("----------------------------------------");
+                    System.out.println(dbMovies.getString("title") +" was rented "+timesRented.getInt("timesRented")+" times!");
+                }while(dbMovies.next() && timesRented.next());
+                System.out.println("----------------------------------------\n");
+            }else{
+                System.out.println("Not enough data!");
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Database not connected");
+        }
     }
 
 }
