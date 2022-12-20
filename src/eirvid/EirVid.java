@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 
+/*
+Author : Muhammad Ali Shahzaib 2020463
+ */
 public class EirVid {
 
     private static User CURRENTUSER = null;
@@ -136,20 +139,8 @@ public class EirVid {
 
             switch (input) {
                 case 1 -> {
-                    
-                    engine.viewTopMovies();
-                    //top 5 movies which appear most in rentals table in tb will appear here.
-                    /*SELECT DISTINCT movies.title
-                    FROM movies , rentals
-                    WHERE  movies.id IN (select movieId from rentals GROUP BY movieId ORDER BY COUNT(movieId) DESC );
 
-                    select COUNT(movieId) AS timesRented
-                    from rentals
-                    GROUP BY movieId
-                    ORDER BY COUNT(movieId) DESC
-                    
-                    WILL USE THESE QUERIES TO DISPLAY MOST RENTED MOVIES AND THE TOTAL TIMES EACH WAS RENTED
-                     */
+                    engine.viewTopMovies();
 
                 }
                 case 2 -> {

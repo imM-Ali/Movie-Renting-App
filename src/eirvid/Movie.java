@@ -2,12 +2,10 @@ package eirvid;
 
 /**
  *
- * @author diesel
- * Student number: 2020302
+ * @author diesel Student number: 2020302
  */
+public class Movie {
 
-
-public class Movie{
     String orgLang;
     String orgTitle;
     String overview;
@@ -20,7 +18,7 @@ public class Movie{
     int voteCount;
     double price;
     Boolean isAvailable;
-    
+
     public Movie(String orgLang, String orgTitle, String overview, double popularity, String releaseDate, int runtime, String tagline, String title, double voteAvg, int voteCount, double price) {
         this.orgLang = orgLang;
         this.orgTitle = orgTitle;

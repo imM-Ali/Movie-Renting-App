@@ -8,10 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-
+/*
+Author : Muhammad Ali Shahzaib 2020463
+ */
 public class MoviesHandler {
 
     public void populateMovies() throws IllegalAccessException {
@@ -173,7 +173,7 @@ public class MoviesHandler {
                 while (true) {
                     try {
                         numOfDays = keyboard.nextInt();
-                        if(numOfDays<1){
+                        if (numOfDays < 1) {
                             throw new Exception();
                         }
 
@@ -264,23 +264,23 @@ public class MoviesHandler {
         }
 
     }
-    
-    public void viewTopMovies(){
+
+    public void viewTopMovies() {
         try {
             ResultSet dbMovies = stmt.executeQuery("SELECT DISTINCT movies.title FROM movies , rentals  WHERE  movies.id IN (select movieId from rentals GROUP BY movieId ORDER BY COUNT(movieId) DESC ) limit 0,5;");
-             Statement tempState = conn.createStatement();
+            Statement tempState = conn.createStatement();
             ResultSet timesRented = tempState.executeQuery("select COUNT(movieId) AS timesRented from rentals GROUP BY movieId ORDER BY COUNT(movieId) DESC limit 0,5");
-            
-            if(dbMovies.next() && timesRented.next()){
-                do{
-                     System.out.println("----------------------------------------");
-                    System.out.println(dbMovies.getString("title") +" was rented "+timesRented.getInt("timesRented")+" times!");
-                }while(dbMovies.next() && timesRented.next());
+
+            if (dbMovies.next() && timesRented.next()) {
+                do {
+                    System.out.println("----------------------------------------");
+                    System.out.println(dbMovies.getString("title") + " was rented " + timesRented.getInt("timesRented") + " times!");
+                } while (dbMovies.next() && timesRented.next());
                 System.out.println("----------------------------------------\n");
-            }else{
+            } else {
                 System.out.println("Not enough data!");
             }
-            
+
         } catch (SQLException ex) {
             System.out.println("Database not connected");
         }
