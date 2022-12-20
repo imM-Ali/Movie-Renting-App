@@ -1,5 +1,11 @@
 package eirvid;
 
+/**
+ *
+ * @author diesel
+ * Student number: 2020302
+ */
+
 
 public class Movie{
     String orgLang;

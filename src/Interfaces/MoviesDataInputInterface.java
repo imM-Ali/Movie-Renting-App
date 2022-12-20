@@ -10,7 +10,8 @@ import java.util.List;
 
 /**
  *
- * @author diese
+ * @author diesel
+ * Student number: 2020302
  */
 public interface MoviesDataInputInterface {
     public List<String[]> ReadMoviesData() throws FileNotFoundException, IOException;
