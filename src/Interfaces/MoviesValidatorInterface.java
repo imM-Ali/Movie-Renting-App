@@ -4,11 +4,10 @@
  */
 package Interfaces;
 
-import java.util.List;
-
 /**
  *
- * @author diese
+ * @author diesel
+ * Student number: 2020302
  */
 public interface MoviesValidatorInterface {
     public boolean Validate(String[] fields);

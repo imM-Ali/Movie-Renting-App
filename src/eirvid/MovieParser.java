@@ -1,5 +1,11 @@
 package eirvid;
 
+/**
+ *
+ * @author diesel
+ * Student number: 2020302
+ */
+
 import Interfaces.MoviesMapperInterface;
 import Interfaces.MoviesParserInterface;
 import Interfaces.MoviesValidatorInterface;

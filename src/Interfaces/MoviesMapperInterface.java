@@ -8,7 +8,8 @@ import eirvid.Movie;
 
 /**
  *
- * @author diese
+ * @author diesel
+ * Student number: 2020302
  */
 public interface MoviesMapperInterface {
     public Movie Map(String[] fields);
