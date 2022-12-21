@@ -25,7 +25,7 @@ public class EirVid {
     public static void main(String[] args) throws FileNotFoundException, IOException, SQLException, ParseException {
 
         String dbUSER = "root";
-        String dbPASS = "erick1002";
+        String dbPASS = "asdf";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
