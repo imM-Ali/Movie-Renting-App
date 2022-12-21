@@ -199,12 +199,15 @@ public class MoviesHandler {
                 //update users rental history
                 stmt.execute("update users set history = '" + userHistory + "' Where id = (" + newRent.userId + ")");
 
-                ResultSet price = stmt.executeQuery("SELECT price FROM rtplayer.movies where id = " + newRent.movieId + "");
-                price.next();
+                ResultSet movie = stmt.executeQuery("SELECT title,price FROM rtplayer.movies where id = " + newRent.movieId + "");             
+                movie.next();
                 //displays a success message with the ID and Price of the movie  
                 System.out.println("\n----------------------------------------");
-                System.out.println("Successfully Rented movie ID: " + newRent.movieId + "!");
-                System.out.println("Please pay " + price.getDouble("price") * numOfDays + " at the counter, thank you!\n");
+                System.out.println("Successfully Rented to: " + currentUser.userName + "");                 
+                System.out.println("Rented movie title: " +movie.getString("title") + "");  
+                System.out.println("Rented movie price: " + movie.getDouble("price") + "");
+                System.out.println("----Rented for "+numOfDays+" days!----");
+                System.out.println("Please pay " + movie.getDouble("price") * numOfDays + " at the counter, thank you!\n");
                 System.out.println("\n----------------------------------------");
 
                 appCompleted = true;
