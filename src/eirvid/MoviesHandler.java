@@ -41,6 +41,7 @@ public class MoviesHandler {
                     + "PRIMARY KEY (id));"
             );
             System.out.println("Pushing Movies To DB....");
+            //pushing each movie to the DB
             for (Movie movie : allMovies) {
                 stmt.execute(
                         //Using ignore keyword so that if SQL returns with a duplicate error it will ignore that record and go to the next one
@@ -73,9 +74,10 @@ public class MoviesHandler {
     }
 
     public void viewMovies() throws SQLException {
-
+        
+        //fetches all available movies from the DB
         ResultSet dbMovies = stmt.executeQuery("SELECT * FROM movies Where isAvailable = true");
-        //map - indexing starts at 1
+        //map - resultset indexing starts at 1
         //1-ID
         //2-Language
         //3-Title

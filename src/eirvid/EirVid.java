@@ -15,7 +15,8 @@ import java.text.ParseException;
 Author : Muhammad Ali Shahzaib 2020463
  */
 public class EirVid {
-
+    
+    //setting these as static so they can be used across the classes in the package.
     private static User CURRENTUSER = null;
     static Scanner keyboard = new Scanner(System.in);
     static Statement stmt;
@@ -24,6 +25,7 @@ public class EirVid {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, SQLException, ParseException {
 
+        //Please set this according to your local DB credentials
         String dbUSER = "root";
         String dbPASS = "asdf";
 
@@ -31,9 +33,11 @@ public class EirVid {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost/", dbUSER, dbPASS);
             stmt = conn.createStatement();
+            //reads, validates movies from csv and then pushes to DB
             engine.populateMovies();
             System.out.println("Processing successfull");
             System.out.println("----------------------------------\n");
+            //sends to the login/signup methods.
             handleLogin();
 
         } catch (SQLException e) {
@@ -49,7 +53,7 @@ public class EirVid {
     }
 
     public static void handleLogin() throws SQLException, IOException, FileNotFoundException, ParseException {
-
+        
         String input;
         stmt.execute("CREATE TABLE IF NOT EXISTS Users "
                 + "(id INT NOT NULL AUTO_INCREMENT UNIQUE,"
@@ -58,6 +62,7 @@ public class EirVid {
                 + "history TEXT,"
                 + "PRIMARY KEY (id));"
         );
+        
         do {
             System.out.println("""
                                Please select one of the following options
@@ -65,6 +70,7 @@ public class EirVid {
                                2)Signup
                                3)Exit"""
             );
+            //creating loginHandler object
             loginHandler attempt = new loginHandler();
             while (true) {
                 try {
@@ -97,7 +103,7 @@ public class EirVid {
         } while (CURRENTUSER == null);
 
     }
-
+    //takes the currentuser object so that it can be referenced all across the program wherever needed such as user id and name
     public static void openShop(User _currentUser) throws FileNotFoundException, IOException, SQLException, ParseException {
         stmt.execute("CREATE TABLE IF NOT EXISTS Rentals "
                 + "(id INT NOT NULL AUTO_INCREMENT UNIQUE,"
