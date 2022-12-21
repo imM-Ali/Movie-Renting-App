@@ -93,7 +93,7 @@ public class loginHandler {
         return result;
     }
 
-    public boolean validatePass(String password) {
+    public static boolean validatePass(String password) {
         //https://www.regextester.com/110035
         boolean result = false;
         result = password.matches("(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+!=])(?=.{8,}).*$");
