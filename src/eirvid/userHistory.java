@@ -31,14 +31,12 @@ class userHistory {
 
                 for (String movieId : movieIds) {
                    ResultSet movieDetails = extraState.executeQuery("SELECT title, price, popularity FROM movies WHERE id = "+movieId+";");
-                   while (movieDetails.next()) {
-
-                System.out.println("Title: " + movieDetails.getString("title") + "\n");
+                   if(movieDetails.next()){
+                       System.out.println("Title: " + movieDetails.getString("title") + "\n");
                 System.out.println("Rating: " + movieDetails.getString("popularity") + "\n");
                 System.out.println("Price (per day): " + movieDetails.getString("price") + "\n");
                 System.out.println("----------------------------------------");
-
-            }
+                   }                  
 
                 }
 
