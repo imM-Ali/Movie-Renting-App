@@ -25,7 +25,7 @@ public class EirVid {
     public static void main(String[] args) throws FileNotFoundException, IOException, SQLException, ParseException {
 
         String dbUSER = "root";
-        String dbPASS = "erick1002";
+        String dbPASS = "asdf";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -120,9 +120,10 @@ public class EirVid {
                                2)Select a movie to Rent.
                                3)Return a movie.
                                4)Display my current rented movies.
-                               5)Change password
-                               6)Logout.
-                               7)Exit the shop""");
+                               5)Display history
+                               6)Change password
+                               7)Logout.
+                               8)Exit the shop""");
 
             //handling inputmismatch exception
             //https://stackoverflow.com/questions/16816250/java-inputmismatchexception
@@ -147,7 +148,6 @@ public class EirVid {
                 case 2 -> {
 
                     engine.viewMovies();
-
                     engine.rentMovie(_currentUser);
 
                 }
@@ -158,17 +158,22 @@ public class EirVid {
                     engine.viewMovies(_currentUser);
                 }
                 case 5 -> {
+                    // view history by passing user to the method.
+                    userHistory history = new userHistory();
+                    history.view(_currentUser);
+                }
+                 case 6 -> {
                     ChangePassword changer = new ChangePassword();
                     changer.changePassword(_currentUser);
                 }
-                case 6 -> {
+                case 7 -> {
                     CURRENTUSER = null;
                     System.out.println("----------------------------------------");
                     System.out.println("Logged out!");
                     System.out.println("----------------------------------------\n");
                     handleLogin();
                 }
-                case 7 ->
+                case 8 ->
                     System.out.println("See you next time!");
             }
 
